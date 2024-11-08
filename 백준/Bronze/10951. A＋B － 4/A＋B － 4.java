@@ -8,10 +8,10 @@ public class Main{
         while(true){
             try {
                 A = scanner.nextInt();
+                B = scanner.nextInt();
             }catch (Exception e){
                 break;
             }
-            B = scanner.nextInt();
             System.out.println(A + B);
         }
     }
