@@ -1,14 +1,20 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String str;
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
+        String input;
 
-        while((str=br.readLine())!=null) {
-            System.out.println(str);
+        while(true){
+            input = br.readLine();
+            if(input == null) break;
+            bw.write(input+"\n");
         }
-        br.close();
+        bw.flush();
     }
 }
