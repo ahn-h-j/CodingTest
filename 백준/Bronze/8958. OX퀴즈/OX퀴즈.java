@@ -15,7 +15,6 @@ public class Main{
 
         for(int i = 0; i < testNumber; i++){
             testResult = scanner.nextLine();
-//            System.out.println(testResult);
             while(true){
 
                 if(questionNumber == testResult.length()){
@@ -29,7 +28,6 @@ public class Main{
                 answerOX = testResult.charAt(questionNumber);
                 if (answerOX == 'O') {
                     totalScore += weightedScore;
-//                    System.out.println(totalScore);
                     weightedScore++;
                     questionNumber++;
                 }
