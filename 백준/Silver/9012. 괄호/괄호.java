@@ -11,11 +11,12 @@ public class Main{
             String ps = br.readLine();
             boolean judge = findVPS(ps);
             if(judge) {
-                System.out.println("YES");
+                bw.write("YES\n");
             } else{
-                System.out.println("NO");
+                bw.write("NO\n");
             }
         }
+        bw.flush();
     }
     public static boolean findVPS(String ps) {
         Stack<String> stack = new Stack<>();
