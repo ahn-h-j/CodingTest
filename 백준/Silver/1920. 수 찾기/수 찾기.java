@@ -3,10 +3,9 @@ import java.util.*;
 
 
 public class Main{
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
     public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-
         int N = Integer.parseInt(br.readLine());
 
         //중복을 제거하기 위해 hashset사용
@@ -23,12 +22,13 @@ public class Main{
             int num = Integer.parseInt(inputNums[i]);
             Search(set, num);
         }
+        bw.flush();
     }
-    private static void Search(Set<Integer> set, int num){
+    private static void Search(Set<Integer> set, int num) throws IOException {
         if(set.contains(num)){
-            System.out.println(1);
+            bw.write(1 + "\n");
         }else{
-            System.out.println(0);
+            bw.write(0 + "\n");
         }
     }
 }
