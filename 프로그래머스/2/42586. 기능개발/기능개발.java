@@ -2,34 +2,36 @@ import java.util.*;
 
 class Solution {
     public int[] solution(int[] progresses, int[] speeds) {
-        Map<Integer,Integer> todayDeployCount = new LinkedHashMap<>();
-        ArrayList<Integer> remainDays = new ArrayList<>();
-
+        Queue<Integer> remainDays = new LinkedList<>();
         findRemainDay(remainDays,progresses,speeds);
-        calculateDeployDay(remainDays);
-
-        return calculateDeployCount(remainDays,todayDeployCount);
+        return calculateDeployDay(remainDays);
     }
 
-    public void findRemainDay(ArrayList<Integer> remainDays, int[] progresses, int[] speeds){
+    public void findRemainDay(Queue<Integer> remainDays, int[] progresses, int[] speeds){
         for(int index = 0; index < progresses.length; index++){
             int remainDay = (int)Math.ceil((double)(100 - progresses[index]) / speeds[index]);
-            remainDays.add(remainDay);
+            remainDays.offer(remainDay);
         }
     }
 
-    public void calculateDeployDay(ArrayList<Integer> remainDays){
-        for(int index = 0; index < remainDays.size() - 1; index++){
-            if(remainDays.get(index) > remainDays.get(index + 1)){
-                remainDays.set(index + 1, remainDays.get(index));
+    public int[] calculateDeployDay(Queue<Integer> remainDays){
+        ArrayList<Integer> deployCount = new ArrayList<>();
+        int dayDeployCount = 1;
+
+        int deployDay = remainDays.poll();
+        while(!remainDays.isEmpty()){
+            int nextDeployDay = remainDays.poll();
+            if(deployDay >= nextDeployDay){
+                dayDeployCount++;
+            }else{
+                deployCount.add(dayDeployCount);
+                deployDay = nextDeployDay;
+                dayDeployCount = 1;
             }
         }
+
+        deployCount.add(dayDeployCount);
+        return deployCount.stream().mapToInt(Integer::intValue).toArray();
     }
 
-    public int[] calculateDeployCount(ArrayList<Integer> remainDays, Map<Integer,Integer> todayDeployCount){
-        for(int index = 0; index < remainDays.size(); index++){
-            todayDeployCount.put(remainDays.get(index), todayDeployCount.getOrDefault(remainDays.get(index),0) + 1);
-        }
-        return todayDeployCount.values().stream().mapToInt(Integer::intValue).toArray();
-    }
 }
