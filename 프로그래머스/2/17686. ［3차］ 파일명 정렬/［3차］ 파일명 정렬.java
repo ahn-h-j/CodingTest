@@ -1,69 +1,72 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 
 class FileName {
-    String name;
+    String Name;
     String head;
     int number;
     int index;
 
     public FileName(String name, String head, int number, int index) {
-        this.name = name;
+        Name = name;
         this.head = head;
         this.number = number;
         this.index = index;
     }
-
-    @Override
-    public String toString() {
-        return name;
-    }
 }
+
 class Solution {
     public String[] solution(String[] files) {
+        String[] answer = new String[files.length];
         ArrayList<FileName> fileNames = new ArrayList<>();
 
-        processFileNames(files, fileNames);
+        processFileName(files, fileNames);
+        sortFileName(fileNames);
 
-        fileNames.sort((o1, o2) -> {
-            // HEAD 비교 (대소문자 구분 없이)
-            int headCompare = o1.head.compareToIgnoreCase(o2.head);
-            if (headCompare != 0) return headCompare;
-
-            // NUMBER 비교
-            if (o1.number != o2.number) return Integer.compare(o1.number, o2.number);
-
-            // 원래 순서 유지
-            return Integer.compare(o1.index, o2.index);
-        });
-
-        // 결과 반환
-        String[] answer = new String[files.length];
-        for (int i = 0; i < fileNames.size(); i++) {
-            answer[i] = fileNames.get(i).name;
+        for (int index = 0; index < fileNames.size(); index++) {
+            answer[index] = fileNames.get(index).Name;
         }
         return answer;
     }
 
-    public void processFileNames(String[] files, ArrayList<FileName> fileNames) {
-        for (int i = 0; i < files.length; i++) {
-            String file = files[i];
+    public void processFileName(String[] files, ArrayList<FileName> fileNames) {
+        int fileIndex = 0;
+        for (String file : files) {
+            char[] fileChar = file.toCharArray();
+
             StringBuilder head = new StringBuilder();
-            StringBuilder number = new StringBuilder();
+            int num = 0;
+            boolean isNumberStarted = false;
 
-            int j = 0;
-            // HEAD 부분
-            while (j < file.length() && !Character.isDigit(file.charAt(j))) {
-                head.append(file.charAt(j));
-                j++;
+            for (int index = 0; index < fileChar.length; index++) {
+                if (!isNumberStarted && !Character.isDigit(fileChar[index])) {
+                    head.append(fileChar[index]);
+                } else if (Character.isDigit(fileChar[index])) {
+                    isNumberStarted = true;
+                    num = num * 10 + (fileChar[index] - '0');
+                } else {
+                    break;
+                }
             }
-            // NUMBER 부분
-            while (j < file.length() && Character.isDigit(file.charAt(j))) {
-                number.append(file.charAt(j));
-                j++;
-            }
-
-            fileNames.add(new FileName(file, head.toString(), Integer.parseInt(number.toString()), i));
+            fileNames.add(new FileName(file, head.toString(), num, fileIndex++));
         }
+    }
+
+
+    public void sortFileName(ArrayList<FileName> fileNames) {
+        fileNames.sort(new Comparator<FileName>() {
+            @Override
+            public int compare(FileName o1, FileName o2) {
+                if (o1.head.equalsIgnoreCase(o2.head)) { // HEAD가 같은 경우
+                    if (o1.number == o2.number) { // HEAD와 NUMBER가 같은 경우
+                        return Integer.compare(o1.index, o2.index); // 원래 순서 비교
+                    }
+                    return Integer.compare(o1.number, o2.number); // NUMBER 순 비교
+                } else {
+                    return o1.head.compareToIgnoreCase(o2.head); // HEAD를 대소문자 구분 없이 비교
+                }
+            }
+        });
     }
 }
