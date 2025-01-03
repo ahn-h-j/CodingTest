@@ -21,50 +21,15 @@ class ExpressionToken {
         this.isX = isX;
     }
 
-    public String NoBaseString() {
-        return operand1 + " " + operator + " " + operand2 + " = ?";
-    }
-
     public String BaseString(String result) {
         return operand1 + " " + operator + " " + operand2 + " = " + result;
     }
 }
 
 class Solution {
-    public static void main(String[] args) {
-        Solution solution = new Solution();
-//        String[] expressions = {"14 + 3 = 17", "13 - 6 = X", "51 - 5 = 44"};
-//        System.out.println(Arrays.toString(solution.solution(expressions)));
-//
-//        String[] expressions2 = {"1 + 1 = 2", "1 + 3 = 4", "1 + 5 = X", "1 + 2 = X"};
-//        System.out.println(Arrays.toString(solution.solution(expressions2)));
-//
-//        String[] expressions3 = {"10 - 2 = X", "30 + 31 = 101", "3 + 3 = X", "33 + 33 = X"};
-//        System.out.println(Arrays.toString(solution.solution(expressions3)));
-//
-//        String[] expressions4 = {"2 - 1 = 1", "2 + 2 = X", "7 + 4 = X", "5 - 5 = X"};
-//        System.out.println(Arrays.toString(solution.solution(expressions4)));
-//
-//        String[] expressions5 = {"2 - 1 = 1", "2 + 2 = X", "7 + 4 = X", "8 + 4 = X"};
-//        System.out.println(Arrays.toString(solution.solution(expressions5)));
-
-        String[] expressions6 = {"14 + 3 = X", "7 + 7 = X"};
-        System.out.println(Arrays.toString(solution.solution(expressions6)));
-
-        String[] expressions7 = {"2 - 1 = X", "3 + 3 = X"};
-        System.out.println(Arrays.toString(solution.solution(expressions7)));
-
-        String[] expressions8 = {"1 - 1 = X", "1 + 1 = X"};
-        System.out.println(Arrays.toString(solution.solution(expressions8)));
-
-
-    }
-
     public String[] solution(String[] expressions) {
         List<String> answerList = new ArrayList<>();
         ArrayList<ExpressionToken> questions = new ArrayList<>();
-
-
         // 최소 진수 체크
         int minBase = findMinBaseAndQuestion(expressions, questions);
         // 진수 찾기
@@ -115,12 +80,9 @@ class Solution {
             for (int index = minBase; index < 10; index++) {
                 String baseIndexSum = calculate(index,question);
 
-                int decimalSum = question.operator == '+' ?
-                          Integer.parseInt(question.operand1) + Integer.parseInt(question.operand2)
-                        : Integer.parseInt(question.operand1) - Integer.parseInt(question.operand2); // 10진법 계산
+                String decimalSum = calculate(10,question);
 
-                if (baseIndexSum.equals(question.result) &&
-                        decimalSum != Integer.parseInt(question.result)) {
+                if (baseIndexSum.equals(question.result) && !decimalSum.equals(question.result)) {
                     Base = index;
                     break;
                 }
@@ -136,9 +98,6 @@ class Solution {
                 if (Base == 0) { // Base를 찾지 못한 경우
                     String base10Sum = calculate(10,question);
                     String minBaseSum = calculate(minBase,question);
-                    // 결과가 minBase보다 작을 때만 유효
-                    // minbase가 4 일떄 1 + 2 = x -> 1 + 2 = 3 / 1 + 3 = x -> 1 + 3 = 4, 10
-                    // minbase가 4 일때 11 + 22 = x -> 11 + 22 = x
                     if (base10Sum.equals(minBaseSum)) {
                         result = base10Sum; // 결과값 갱신
                     } else {
