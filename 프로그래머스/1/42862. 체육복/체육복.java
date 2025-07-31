@@ -1,47 +1,37 @@
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+    import java.util.*;
 
-public class Solution {
-    public int solution(int n, int[] lost, int[] reserve) {
-        int answer = n - lost.length;
+    public class Solution {
+        public int solution(int n, int[] lost, int[] reserve) {
 
-        Set<Integer> lostSet = new HashSet<>();
-        for (int l : lost) {
-            lostSet.add(l);
-        }
-
-        Set<Integer> reserveSet = new HashSet<>();
-        for (int l : reserve) {
-            reserveSet.add(l);
-        }
-
-        List<Integer> selfHelp = new ArrayList<>();
-        for (int student : lostSet) {
-            if (reserveSet.contains(student)) {
-                selfHelp.add(student);
+            List<Integer> lostList = new ArrayList<>();
+            for (int i : lost) {
+                lostList.add(i);
             }
-        }
+            Collections.sort(lostList);
 
-        for (int student : selfHelp) {
-            lostSet.remove(student);
-            reserveSet.remove(student);
-            answer++;
-        }
-
-        for (int l : lostSet) {
-            if(reserveSet.contains(l - 1)){
-                reserveSet.remove(l - 1);
-                answer++;
-            } else if(reserveSet.contains(l + 1)){
-                reserveSet.remove(l + 1);
-                answer++;
+            List<Integer> reverseList = new ArrayList<>();
+            for (int i : reserve) {
+                reverseList.add(i);
             }
-        }
+            Collections.sort(reverseList);
 
-        return answer;
+            Iterator<Integer> iter = reverseList.iterator();
+            while (iter.hasNext()) {
+                Integer i = iter.next();
+                if (lostList.contains(i)) {
+                    lostList.remove(i);
+                    iter.remove();  
+                }
+            }
+
+            for (Integer i : reverseList) {
+                if(lostList.contains(i-1)){
+                    lostList.remove(Integer.valueOf(i-1));
+                }else if (lostList.contains(i+1)){
+                    lostList.remove(Integer.valueOf(i+1));
+                }
+            }
+
+            return n - lostList.size();
+        }
     }
-
-
-}
