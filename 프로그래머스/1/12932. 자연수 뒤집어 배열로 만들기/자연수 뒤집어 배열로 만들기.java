@@ -1,11 +1,9 @@
 class Solution {
     public int[] solution(long n) {
-        int length = (int)(Math.log10(n)+1);
-        int[] answer = new int[length];
-        long temp;
-        for(int i = 0; i < answer.length; i++){
-            temp = n % 10;
-            answer[i] = (int)temp;
+        int[] answer = new int[String.valueOf(n).length()];
+        int index = 0;
+        while(n != 0){
+            answer[index++] = (int) (n % 10);
             n /= 10;
         }
         return answer;
