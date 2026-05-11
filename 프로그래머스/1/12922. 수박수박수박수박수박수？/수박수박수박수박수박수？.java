@@ -1,13 +1,14 @@
 class Solution {
     public String solution(int n) {
-        StringBuilder stringBuilder = new StringBuilder();
-        for(int index = 0; index < n; index++){
-            if (index % 2 == 0){
-                stringBuilder.append("수");
-            } else{
-                stringBuilder.append("박");
-            }
+        StringBuilder sb = new StringBuilder();
+        int a = n / 2;
+        int b = n % 2;
+        for(int i = 0; i < a; i++){
+            sb.append("수박");
         }
-        return stringBuilder.toString();
+        if(b != 0){
+            sb.append("수");
+        }
+        return sb.toString();
     }
 }
