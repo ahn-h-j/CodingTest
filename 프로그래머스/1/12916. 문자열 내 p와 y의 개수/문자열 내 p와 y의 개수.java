@@ -1,21 +1,21 @@
 class Solution {
     boolean solution(String s) {
-        boolean answer = true;
-        String ch;
-        int pcount = 0;
-        int ycount = 0;
-        for(int i = 0; i < s.length(); i++){
-            ch = Character.toString(s.charAt(i));
-            if(ch.equalsIgnoreCase("p")){
-                pcount++;
-            }else if(ch.equalsIgnoreCase("y")){
-                ycount++;
+       boolean answer = true;
+
+        int pCount = 0;
+        int yCount = 0;
+
+        for(char ch : s.toCharArray()){
+            if(ch == 'p' || ch == 'P'){
+                pCount++;
+            }
+            if(ch == 'y' || ch == 'Y'){
+                yCount++;
             }
         }
-        if(pcount != ycount){
+        if(pCount != yCount){
             answer = false;
         }
-
         return answer;
     }
 }
